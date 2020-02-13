@@ -1,11 +1,14 @@
 {% extends "layouts/base.html" %}
 {% block title %}{{title}}{% endblock %}
 {% block head %}
-  {{ super() }}
+{{ super() }}
 {% endblock %}
 {% block content %}
 <div class="row text-center">
-  <h1>{{name}}</h1>
+  <button class="btn btn-primary" id="refreshButton">Randomize</button>
+  <button class="btn btn-secondary" id="saveButton">Save</button>
 </div>
+<canvas id="randomCanvas"></canvas>
 <pre>{{code}}</pre>
+<script>{{ code | safe }}</script>
 {% endblock %}

@@ -10,7 +10,9 @@ p = Path('./canvas/')
 
 HEX_RE = re.compile(r'#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})', flags=re.IGNORECASE)
 RGB_RE = re.compile(r'rgb\((\d{1,3},\s?){2}(\d{1,3}\s?)\)')
-CANVAS_RE = re.compile(r'(getElementById\()\'(\w+)\'\)')
+CANVAS_RE = re.compile(r'(getElementById\()[\'\"](\w+)[\'\"]\)')
+WIDTH_RE = re.compile(r'(.width) = (\d+)')
+HEIGHT_RE = re.compile(r'(.height) = (\d+)')
 
 
 def rgb_to_hex(rgb: Tuple[int, int, int]) -> str:
@@ -29,10 +31,22 @@ def get_random_hex_color() -> str:
 
 def replace_color(match):
     match = match.group()
-    print('Old color was %s' % match)
     color = get_random_hex_color()
-    print('Replaced by %s' % color)
     return color
+
+
+def upscale(match):
+    dim = match.group(1)
+    val = int(match.group(2))
+    scaled = val * 3
+    print(f'Scaling from {val} to {scaled}')
+    return f'{dim} = {scaled}'
+
+
+def scale_canvas(code: str) -> str:
+    code = HEIGHT_RE.sub(upscale, code, count=1)
+    code = WIDTH_RE.sub(upscale, code, count=1)
+    return code
 
 
 def randomize_colors(code: str) -> str:
@@ -67,6 +81,23 @@ def update_canvas_id(code: str, new_id: str = 'randomCanvas') -> str:
     """
     fixed = CANVAS_RE.sub(rf'\1"{new_id}")', code, count=1)
     return fixed
+
+
+def process(code: str) -> str:
+    """
+    Wraps all processing steps in single function call.
+
+    Arguments:
+        code (str): The original code block to be updated.
+
+    Returns:
+        str: Code block with all processing steps performed.
+
+    """
+    randomized = randomize_colors(code)
+    tagged = update_canvas_id(randomized)
+    scaled = scale_canvas(tagged)
+    return scaled
 
 
 for f in p.glob('*.js'):
