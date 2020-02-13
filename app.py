@@ -4,7 +4,7 @@ import random
 from flask import Flask, render_template, make_response
 from flask import redirect, request, jsonify, url_for
 
-from colors import STYLES, styles
+from colors import STYLES, styles, randomize_colors
 
 app = Flask(__name__)
 
@@ -18,11 +18,24 @@ def index():
 
 
 @app.route('/canvas', methods=['GET'])
+def get_randomized_canvas():
+    style = random.choice(STYLES)
+    response = jsonify({
+        'msg': 'A random style was chosen',
+        'style': style,
+        'original_code': styles[style]['code'],
+        'randomized': randomize_colors(styles[style]['code'])
+    })
+    return make_response(response, 200)
+
+
+@app.route('/canvas/og', methods=['GET'])
 def get_random_canvas():
     style = random.choice(STYLES)
     response = jsonify({
         'msg': 'A random style was chosen',
-        'style': style
+        'style': style,
+        'original_code': styles[style]['code']
     })
     return make_response(response, 200)
 
@@ -32,7 +45,8 @@ def get_canvas(style: str):
     if style in STYLES:
         response = jsonify({
             'style': style,
-            'original_code': styles[style]['code']
+            'original_code': styles[style]['code'],
+            'randomized': randomize_colors(styles[style]['code'])
         })
         return make_response(response, 200)
     else:
