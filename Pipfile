@@ -10,6 +10,10 @@ ipython = "*"
 beautifulsoup4 = "*"
 requests = "*"
 flask = "*"
+fastapi = "*"
+uvicorn = "*"
+jinja2 = "*"
+aiofiles = "*"
 
 [requires]
 python_version = "3.7"

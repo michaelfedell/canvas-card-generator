@@ -11,8 +11,8 @@ p = Path('./canvas/')
 HEX_RE = re.compile(r'#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})', flags=re.IGNORECASE)
 RGB_RE = re.compile(r'rgb\((\d{1,3},\s?){2}(\d{1,3}\s?)\)')
 CANVAS_RE = re.compile(r'(getElementById\()[\'\"](\w+)[\'\"]\)')
-WIDTH_RE = re.compile(r'(.width) = (\d+)')
-HEIGHT_RE = re.compile(r'(.height) = (\d+)')
+WIDTH_RE = re.compile(r'(.width) = \'?(\d+)(px[\'\"])?')
+HEIGHT_RE = re.compile(r'(.height) = [\'\"]?(\d+)(px[\'\"])?')
 
 
 def rgb_to_hex(rgb: Tuple[int, int, int]) -> str:
@@ -38,14 +38,15 @@ def replace_color(match):
 def upscale(match):
     dim = match.group(1)
     val = int(match.group(2))
+    px = match.group(3)
     scaled = val * 3
     print(f'Scaling from {val} to {scaled}')
-    return f'{dim} = {scaled}'
+    return f'{dim} = {scaled}' if not px else f"{dim} = '{scaled}px'"
 
 
 def scale_canvas(code: str) -> str:
-    code = HEIGHT_RE.sub(upscale, code, count=1)
-    code = WIDTH_RE.sub(upscale, code, count=1)
+    code = HEIGHT_RE.sub(upscale, code, count=2)
+    code = WIDTH_RE.sub(upscale, code, count=2)
     return code
 
 
