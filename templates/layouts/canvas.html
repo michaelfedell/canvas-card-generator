@@ -4,9 +4,10 @@
 {{ super() }}
 {% endblock %}
 {% block content %}
-<div class="row text-center">
-  <button class="btn btn-primary" id="refreshButton">Randomize</button>
-  <button class="btn btn-secondary" id="saveButton">Save</button>
+<div class="row text-center my-3">
+  <a class="btn btn-primary" id="newButton" href="/canvas/render">New Canvas</a>
+  <a class="btn btn-warning ml-3" id="refreshButton" href="/canvas/{{name}}/render">New Colors</a>
+  <button class="btn btn-secondary ml-3" id="saveButton">Save</button>
 </div>
 <canvas id="randomCanvas"></canvas>
 <pre>{{code}}</pre>
