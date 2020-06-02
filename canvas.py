@@ -50,17 +50,20 @@ def scale_canvas(code: str) -> str:
     return code
 
 
-def randomize_colors(code: str) -> str:
+def randomize_colors(code: str, seed: int = 123) -> str:
     """
     Randomize all hex color code references found in a block of code.
 
     Args:
         code (str): The original code block to be updated.
+        seed (int): A seed for deterministic randomness
 
     Returns:
         str: Code block with all hex code colors replaced with random colors.
 
     """
+    random.seed(seed)
+    print(f'Setting seed to {seed}')
     print('Original code is %d lines long' % code.count('\n'))
     randomized_code = HEX_RE.sub(replace_color, code)
     print('Randomized code is %d lines long' % code.count('\n'))
@@ -84,18 +87,19 @@ def update_canvas_id(code: str, new_id: str = 'randomCanvas') -> str:
     return fixed
 
 
-def process(code: str) -> str:
+def process(code: str, seed: int = 123) -> str:
     """
     Wraps all processing steps in single function call.
 
     Arguments:
         code (str): The original code block to be updated.
+        seed (int): A seed for deterministic randomness
 
     Returns:
         str: Code block with all processing steps performed.
 
     """
-    randomized = randomize_colors(code)
+    randomized = randomize_colors(code, seed)
     tagged = update_canvas_id(randomized)
     scaled = scale_canvas(tagged)
     return scaled
