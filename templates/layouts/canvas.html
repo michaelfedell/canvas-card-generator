@@ -6,7 +6,7 @@
 {% block content %}
 <div class="row text-center my-3">
   <a class="btn btn-primary" id="newButton" href="/canvas/render">New Canvas</a>
-  <a class="btn btn-warning ml-3" id="refreshButton" href="/canvas/{{name}}/render">New Colors</a>
+  <a class="btn btn-warning ml-3" id="refreshButton" href="/canvas/{{ style }}/render">New Colors</a>
   <a class="btn btn-secondary ml-3" id="saveButton" href="#">Save</a>
 </div>
 <canvas id="randomCanvas"></canvas>
@@ -15,6 +15,6 @@
 <script>
   var link = document.getElementById('saveButton')
   link.href = document.getElementById('randomCanvas').toDataURL();
-  link.download = '{{name}}.png';
+  link.download = '{{ style }}.png';
 </script>
 {% endblock %}

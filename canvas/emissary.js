@@ -41,7 +41,7 @@ function emissary() {
 
       // Draw a circle on that point
       context.beginPath();
-      context.arc(x, y, Math.random() * 1.8, 0, Math.PI * 2, false);
+      context.arc(x, y, Math.random() * 1.8 + 1.5, 0, Math.PI * 2, false);
       context.fill();
     }
   }
