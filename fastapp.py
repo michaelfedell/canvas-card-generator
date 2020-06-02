@@ -36,34 +36,15 @@ def get_randomized_canvas():
     style = random.choice(STYLES)
     return {
         'msg': 'A random style was chosen',
-        'style': style,
-        'original_code': styles[style]['code'],
-        'randomized': randomize_colors(styles[style]['code'])
+        **get_canvas(style)
     }
-
-
-@app.get('/canvas/og')
-def get_random_canvas():
-    style = random.choice(STYLES)
-    response = {
-        'msg': 'A random style was chosen',
-        'style': style,
-        'original_code': styles[style]['code']
-    }
-    return response
 
 
 @app.get('/canvas/render')
 def render_randomized_canvas(req: Request):
     style = random.choice(STYLES)
-    clean = process(styles[style]['code'])
-    return templates.TemplateResponse(
-        'layouts/canvas.html', dict(
-            request=req,
-            title='Random Canvas',
-            name=f'Randomized {style}'.title(),
-            code=clean
-        ))
+    # TODO: Should this be an actual redirect so that style is in URL?
+    return render_canvas(style, req)
 
 
 @app.get('/canvas/{style}')
@@ -84,7 +65,7 @@ def render_canvas(style: str, req: Request):
             'layouts/canvas.html', dict(
                 request=req,
                 title='Random Canvas',
-                name=f'Randomized {style}'.title(),
+                name=style,
                 code=clean
             ))
     else:
