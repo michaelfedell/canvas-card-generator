@@ -84,3 +84,7 @@ def render_canvas(style: str):
             'msg': f'Sorry, but {style} is not an available style'
         })
         return make_response(response, 400)
+
+
+if __name__ == '__main__':
+    app.run()
