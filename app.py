@@ -3,12 +3,9 @@ import random
 
 from flask import Flask, render_template, make_response
 from flask import redirect, request, jsonify, url_for
-
 from canvas import STYLES, styles, randomize_colors, update_canvas_id, process
 
 app = Flask(__name__)
-print(f"What am I? {app}")
-
 
 @app.route('/', methods=['GET'])
 def index():
