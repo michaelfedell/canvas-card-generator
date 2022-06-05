@@ -4,12 +4,12 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-ipython = "*"
+ipython = "8.4.0"
 
 [packages]
-beautifulsoup4 = "*"
-requests = "*"
-flask = "*"
+beautifulsoup4 = "4.11.1"
+requests = "2.27.1"
+flask = "1.1.2"
 
 [requires]
-python_version = "3.7"
+python_version = "3.9"
